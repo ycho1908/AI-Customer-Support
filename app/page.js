@@ -128,37 +128,37 @@ export default function Home() {
     switch (theme) {
       case 'light':
         return {
-          primary: 'bg-white',
-          secondary: 'bg-gray-100',
-          accent: 'bg-blue-500',
-          text:'text-gray-800',
+          primary: '#ffffff',
+          secondary: '#f3f4f6',
+          accent: '#3b82f6',
+          text: '#1f2937',
         };
       case 'dark':
         return {
-          primary: 'bg-gray-900',
-          secondary: 'bg-gray-800',
-          accent: 'bg-yellow-500',
-          text: 'text-gray-100',
+          primary: '#1f2937',
+          secondary: '#374151',
+          accent: '#fbbf24',
+          text: '#f3f4f6',
         };
       default:
         return {
-          primary: 'bg-white',
-          secondary: 'bg-gray-100',
-          accent: 'bg-blue-500',
-          text: 'text-gray-800',
+          primary: '#ffffff',
+          secondary: '#f3f4f6',
+          accent: '#3b82f6',
+          text: '#1f2937',
         };
     }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // prevents adding a new line in the input field
+      e.preventDefault();
       handleSendMessage();
     }
   };
 
   // get the theme colors for the current theme
-  const { primary, secondary, accent, text } = getThemeColors();
+  const { primary, secondary, accent, text, border } = getThemeColors();
 
   return (
     <Box
@@ -168,14 +168,43 @@ export default function Home() {
       flexDirection='column'
       justifyContent='center'
       alignItems='center'
+      sx={{
+        backgroundColor: primary,
+        color: text,
+        transition: 'background-color 0.3s, color 0.3s',
+      }}
     >
+      <div className='flex space-x-2'>
+        <label htmlFor='theme' className={`text-sm ${text}`}>Theme: </label>
+        <select
+          id='theme'
+          value={theme}
+          onChange={handleThemeChange}
+          // className={`p-1 rounded-md border ${text}`}
+          style={{
+            padding: '0.5rem',
+            borderRadius: '0.25rem',
+            borderColor: text,
+            backgroundColor: secondary,
+            color: text,
+          }}
+        >
+          <option value='light'>Light</option>
+          <option value='dark'>Dark</option>
+        </select>
+      </div>
+      <br/>
       <Stack
         direction='column'
         width='600px'
         height='700px'
-        border='1px solid black'
+        border={`1px solid ${border}`}
         p={2}
         spacing={2}
+        sx={{
+          backgroundColor: secondary,
+          borderColor: accent,
+        }}
       >
         <Stack
           direction='column'
@@ -222,6 +251,10 @@ export default function Home() {
             fullWidth
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
+            sx={{
+              input: { color: text },
+              label: { color: text },
+            }}
           />
           <Button variant='contained' onClick={handleSendMessage}>Send</Button>
         </Stack>
